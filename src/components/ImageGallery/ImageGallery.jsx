@@ -20,14 +20,16 @@ class ImageGallery extends Component {
       prevState.page !== this.state.page
     ) {
       this.setState({ isLoading: true });
-      fetchApi(this.props.searchLine, this.state.page).then(newImages => {
-        this.setState(state => {
-          return {
-            images: [...state.images, ...newImages.hits],
-            isLoading: false,
-          };
-        });
-      });
+      fetchApi(this.props.searchLine, this.state.page)
+        .then(newImages => {
+          this.setState(state => {
+            return {
+              images: [...state.images, ...newImages.hits],
+            };
+          });
+        })
+        .catch(erorr => console.log(erorr))
+        .finally(() => this.setState({ isLoading: false }));
     }
   }
 
@@ -53,17 +55,17 @@ class ImageGallery extends Component {
             ))}
         </ul>
         {this.state.isLoading && (
-          <div className='Loader'>
+          <div className="Loader">
             <ThreeDots
-            height="80"
-            width="80"
-            radius="9"
-            color="#3f51b5"
-            ariaLabel="three-dots-loading"
-            wrapperStyle={{}}
-            wrapperClassName=""
-            visible={true}
-          />
+              height="80"
+              width="80"
+              radius="9"
+              color="#3f51b5"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              wrapperClassName=""
+              visible={true}
+            />
           </div>
         )}
         {newLocal && (
@@ -83,6 +85,6 @@ class ImageGallery extends Component {
 ImageGallery.propTypes = {
   images: PropTypes.object,
   newImages: PropTypes.object,
-}
+};
 
 export default ImageGallery;
